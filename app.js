@@ -1,7 +1,7 @@
 const inquirer = require('inquirer');
 const { getDepartments, addDepartment, getDepartmentId } = require('./operations/departments');
-const { getEmployees, addEmployee } = require('./operations/employee');
-const { getRoles, addRole, getRoleTitle, getRoleByTitle } = require('./operations/roles');
+const { getEmployees, addEmployee, getManagerId, getEmployeeNames } = require('./operations/employee');
+const { getRoles, addRole, getRoleByTitle } = require('./operations/roles');
 
 
 function main(){
@@ -85,6 +85,38 @@ function main(){
             },                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
             when: (ans) => ans.operation === 'add new employee',
         },
+        // {
+        //     message: "Is this employee a manager?",
+        //     type: "confirm",
+        //     name: "is_manager",
+        //     when: (ans) => ans.operation === 'add new employee',
+        // },
+        // {
+        //     message: "Does this employee have a manager?",
+        //     type: "confirm",
+        //     name: "has_manager",
+        //     when: (ans) => ans.operation === 'add new employee',
+        // },
+        {
+            message: "Who is the employees manager?",
+            type: "list",
+            name: "manager",
+            choices: async function listManagers() {
+              const manager = await getEmployeeNames();
+              let managers = ["none"];
+              for (let index = 0; index < manager.length; index++) {
+                let list = manager[index].first_name;
+                managers.push(list);
+              }
+              return managers;
+            },
+            when: (ans) => ans.operation === 'add new employee',
+          },
+
+
+
+
+
     ]).then(async (ans) => {
         switch(ans.operation){
             case "view all departments":
@@ -122,13 +154,19 @@ function main(){
             case "add new employee":
                 const firstName = ans.employee_first_name;
                 const lastName = ans.employee_last_name;
-                
                 const employeeRole = await getRoleByTitle(ans.employee_role);
-                // console.log(employeeRole);
-                if (!employeeRole) {
-                    throw new Error("couldnt add new employee");
+
+                let managerId;
+
+                if(ans.manager ==='none'){
+                    managerId = null;
+                }else{
+                    managerId = await getManagerId(ans.manager);
                 }
-                await addEmployee(firstName, lastName, employeeRole.id);
+                
+                // console.log(employeeRole);
+                await addEmployee(firstName, lastName, employeeRole.id, managerId);
+                
                 console.log("successfully added new employee");
                 break;
 
