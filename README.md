@@ -49,6 +49,7 @@ Email: jake.shaun.roberts1994@gmail.com
 
 ## Deployment
 ![demo-image](./images/week12screenshot.PNG)
+<br>
 [GitHub repo](https://github.com/JRoberts94/Week12-Employee-Tracker)
 
 ## Technology used
