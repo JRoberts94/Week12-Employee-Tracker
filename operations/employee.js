@@ -4,7 +4,7 @@ async function addEmployee(first_name, last_name, role_id, manager){
 
     const db = await connect();
 
-    // await db.query('INSERT INTO `employee_tracker`.`employees` (`first_name`) VALUES (?)', first_name);
+
 
     await db.query('INSERT INTO `employees` (`first_name`, `last_name`, `role_id`, `manager_id`) VALUES (?, ?, ?, ?)', [first_name, last_name, role_id, manager]);
 

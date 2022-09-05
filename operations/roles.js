@@ -14,14 +14,6 @@ async function getRoles(){
     return roles;
 }
 
-// FUNCTION TO RETURN ROLE TITLES
-// async function getRoleTitle() {
-//     const db = await connect();
-//     const roleList = await db.query("SELECT * FROM employee_tracker.roles");
-//     let returnRoles = roleList[0];
-//     return returnRoles;
-//   }
-
   // FUNCTION TO RETURN ROLE ID
 async function getRoleByTitle(title) {
     const db = await connect();

@@ -139,7 +139,7 @@ This Challenge is graded based on the following criteria:
     * Uses the [MySQL2 package](https://www.npmjs.com/package/mysql2) to connect to a MySQL database.
 
     * Uses the [console.table package](https://www.npmjs.com/package/console.table) to print MySQL rows to the console.
-
+00
 * Follows the table schema outlined in the Challenge instructions.
 
 ### Repository Quality: 13%

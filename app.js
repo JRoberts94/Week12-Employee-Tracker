@@ -18,7 +18,7 @@ function main(){
                 "add department",
                 "add a role",
                 "add new employee",
-                "update employee role", // once user selected this, should see employee name list, once selected, select new role
+                // "update employee role", // once user selected this, should see employee name list, once selected, select new role
                 "exit"
             ]
         },
