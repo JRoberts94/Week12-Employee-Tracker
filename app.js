@@ -5,7 +5,11 @@ const { getRoles, addRole, getRoleByTitle } = require('./operations/roles');
 
 
 function main(){
-    
+    console.log("***********************************")
+    console.log("*                                 *")
+    console.log("*         EMPLOYEE TRACKER        *")
+    console.log("*                                 *")
+    console.log("***********************************")
     return inquirer.prompt([
         {
             message: "what you want?",
@@ -120,6 +124,11 @@ function main(){
     ]).then(async (ans) => {
         switch(ans.operation){
             case "view all departments":
+                console.log("***********************************")
+                console.log("*                                 *")
+                console.log("*           DEPARTMENTS           *")
+                console.log("*                                 *")
+                console.log("***********************************")
                 const departments = await getDepartments();
                 console.table(departments);
                 break;
@@ -130,6 +139,11 @@ function main(){
                 break;
 
             case "view all roles":
+                console.log("***********************************")
+                console.log("*                                 *")
+                console.log("*         EMPLOYEE ROLES          *")
+                console.log("*                                 *")
+                console.log("***********************************")
                 const roles = await getRoles();
                 console.table(roles);
                 break;
@@ -147,6 +161,11 @@ function main(){
                 break;
 
             case "view all employees":
+                console.log("***********************************")
+                console.log("*                                 *")
+                console.log("*             EMPLOYEES           *")
+                console.log("*                                 *")
+                console.log("***********************************")
                 const employees = await getEmployees();
                 console.table(employees);
                 break;
