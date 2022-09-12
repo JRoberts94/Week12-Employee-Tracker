@@ -22,19 +22,27 @@ async function getRoleByTitle(title) {
         return roles[0];
   }
 
+// FUNCTION TO RETURN ROLE ID
+async function getRoleId(title) {
+  const db = await connect();
+  console.log(title);
+  const [roleId] = await db.query("SELECT id FROM roles WHERE title = ?", title);
+  return roleId[0];
+}
 
 
-// async function getRoleId(title){
+// async function getRoleId(id){
 //     const db = await connect();
 //     const [roleId] = await db.query(
 //         "SELECT id FROM employee_tracker.roles WHERE title = ?",
-//         title
+//         id
 //     );
-//     return roleId[0]?.title;
+//     return roleId[0]?.id;
 // }
 
 module.exports = {
     addRole,
     getRoles,
     getRoleByTitle,
+    getRoleId,
 }

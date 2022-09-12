@@ -1,7 +1,7 @@
 const inquirer = require('inquirer');
 const { getDepartments, addDepartment, getDepartmentId } = require('./operations/departments');
-const { getEmployees, addEmployee, getManagerId, getEmployeeNames } = require('./operations/employee');
-const { getRoles, addRole, getRoleByTitle } = require('./operations/roles');
+const { getEmployees, addEmployee, getManagerId, getEmployeeNames, updateRole } = require('./operations/employee');
+const { getRoles, addRole, getRoleByTitle, getRoleId } = require('./operations/roles');
 
 
 function main(){
@@ -22,7 +22,7 @@ function main(){
                 "add department",
                 "add a role",
                 "add new employee",
-                // "update employee role", // once user selected this, should see employee name list, once selected, select new role
+                "update an employee role", // once user selected this, should see employee name list, once selected, select new role
                 "exit"
             ]
         },
@@ -116,12 +116,38 @@ function main(){
             },
             when: (ans) => ans.operation === 'add new employee',
           },
-
-
-
-
-
-    ]).then(async (ans) => {
+          {
+            message: "Which employee?",
+            type: "list",
+            name: "update",
+            choices: async function listEmployees() {
+              const employee = await getEmployeeNames();
+              let employees = [];
+              for (let index = 0; index < employee.length; index++) {
+                let list = employee[index].first_name;
+                employees.push(list);
+              }
+              return employees;
+            },
+            when: (res) => res.action === "update an employee role",
+          },
+          {
+            message: "What is the new role?",
+            type: "list",
+            name: "newrole",
+            choices: async function listRole() {
+              const role = await getRoleId();
+              let roles = [];
+              for (let index = 0; index < role.length; index++) {
+                let list = role[index].title;
+                roles.push(list);
+              }
+              return roles;
+            },
+            when: (res) => res.action === "update an employee role",
+          },
+        ])
+    .then(async (ans) => {
         switch(ans.operation){
             case "view all departments":
                 console.log("***********************************")
@@ -190,6 +216,16 @@ function main(){
                 break;
 
 
+            // if user chooses, update employee role
+            case "update an employee role":
+                const emp = ans.update;
+                const newrole = ans.newrole;
+                const roleArray = await getRoleId(newrole);
+                const iNewRole = roleArray[0];
+                await updateRole(emp, iNewRole);
+                console.log("Success!");
+                break;
+
             case "exit":
                 process.exit(0);
                 break;
@@ -201,12 +237,3 @@ function main(){
 }
 
 main();
-// create CLI to manage employees
-
-// view all departments
-
-// view all roles
-// view all employees
-// add a department
-
-// add a role, add an employee, and update an employee role

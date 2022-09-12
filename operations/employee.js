@@ -47,10 +47,31 @@ async function getManagerId(name) {
     }
   }
 
+
+// FUNCTION TO UPDATE ROLE
+async function updateRole(id, role) {
+  const db = await connect();
+  const name = id;
+  const empIdArray = await db.query(
+    "SELECT id FROM employee WHERE first_name = ?",
+    name
+  );
+
+  let employeeId1 = empIdArray[0];
+  let empId = employeeId1[0].id;
+  let roleId = role[0].id;
+
+  let sql = `UPDATE employee SET role_id = ? WHERE id =?`;
+  const data = [roleId, empId];
+  const update = await db.query(sql, data);
+  return update;
+}
+
 module.exports = {
     addEmployee,
     getEmployees,
     getEmployeeNames,
     getManagerId,
+    updateRole,
 
 }
