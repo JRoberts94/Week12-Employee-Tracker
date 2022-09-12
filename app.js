@@ -1,7 +1,7 @@
 const inquirer = require('inquirer');
 const { getDepartments, addDepartment, getDepartmentId } = require('./operations/departments');
 const { getEmployees, addEmployee, getManagerId, getEmployeeNames, updateRole } = require('./operations/employee');
-const { getRoles, addRole, getRoleByTitle, getRoleId } = require('./operations/roles');
+const { getRoles, addRole, getRoleByTitle } = require('./operations/roles');
 
 
 function main(){
@@ -117,7 +117,7 @@ function main(){
             when: (ans) => ans.operation === 'add new employee',
           },
           {
-            message: "Which employee?",
+            message: "Which employee are you updating?",
             type: "list",
             name: "update",
             choices: async function listEmployees() {
@@ -129,22 +129,23 @@ function main(){
               }
               return employees;
             },
-            when: (res) => res.action === "update an employee role",
+            when: (ans) => ans.operation === "update an employee role",
           },
           {
             message: "What is the new role?",
             type: "list",
             name: "newrole",
             choices: async function listRole() {
-              const role = await getRoleId();
-              let roles = [];
-              for (let index = 0; index < role.length; index++) {
-                let list = role[index].title;
-                roles.push(list);
+              const roles = await getRoles();
+              let titles = [];
+              for (let index = 0; index < roles.length; index++) {
+                let list = roles[index].title;
+                titles.push(list);
               }
-              return roles;
+              console.log(titles);
+              return titles;
             },
-            when: (res) => res.action === "update an employee role",
+            when: (ans) => ans.operation === "update an employee role",
           },
         ])
     .then(async (ans) => {
@@ -161,7 +162,7 @@ function main(){
                 
             case "add department":
                 const department = await addDepartment(ans.department_name);
-                console.table("successfully added new role");
+                console.table("successfully added new department");
                 break;
 
             case "view all roles":
@@ -218,11 +219,14 @@ function main(){
 
             // if user chooses, update employee role
             case "update an employee role":
+                // variable for chosen employee to update
                 const emp = ans.update;
+                // chosen new role for chosen employee
                 const newrole = ans.newrole;
-                const roleArray = await getRoleId(newrole);
-                const iNewRole = roleArray[0];
-                await updateRole(emp, iNewRole);
+                const role = await getRoleByTitle(newrole);
+                console.log("heyy", role);
+                
+                await updateRole(role.id, emp);
                 console.log("Success!");
                 break;
 
